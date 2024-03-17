@@ -7,7 +7,7 @@ lr_cv.fit(X_train, Y_train)
 print("Best Parameters: ", lr_cv.best_params_)
 print("Accuracy: ",lr_cv.best_score_)
 
-# Applying Best Parameters Suggested by GridSearch
+# 采用最好的参数
 
 lr = LogisticRegression(C = 1.0, penalty = 'l1', solver = "saga")
 
@@ -16,11 +16,9 @@ lr.fit(X_train, Y_train)
 lr_yp_train = lr.predict(X_train)
 lr_yp_test = lr.predict(X_test)
 
-# Model Evaluation
+# M模型品谷歌
 
 evaluation_parametrics("Logistic Regression Classifier", Y_train, lr_yp_train, Y_test, lr_yp_test)
-
-# Checking For Variable Importance
 
 d1 = pd.DataFrame({'Features': list(X_train.columns), 'Variable Importance Score': list(np.around(lr.coef_[0],3))})
 d1 = d1.sort_values(by = ['Variable Importance Score'], ascending = False)
@@ -29,7 +27,7 @@ feature_importance(d1)
 
 """![](https://raw.githubusercontent.com/Atharv-Chaudhari/Project-Covid-NLP/main/Project%20Covid%20Images/All%20Day.jpg)
 
-### M2 - Random Forest using GridSearchCv
+### M2 - 随机森林 using GridSearchCv
 """
 
 grid2 = {'n_estimators': [200, 300], 'max_depth': [5,6,7,8], 'criterion': ['gini', 'entropy']}
@@ -41,8 +39,6 @@ rf_cv.fit(X_train, Y_train)
 print("Best Parameters: ", rf_cv.best_params_)
 print("Accuracy: ", rf_cv.best_score_)
 
-# Applying Best Parameters Suggested by GridSearch
-
 rf = RandomForestClassifier(n_estimators = 200, max_depth = 8, criterion = 'gini', random_state = 42)
 
 rf.fit(X_train ,Y_train)
@@ -50,7 +46,7 @@ rf.fit(X_train ,Y_train)
 rf_yp_train = rf.predict(X_train)
 rf_yp_test = rf.predict(X_test)
 
-# Model Evaluation
+# 模型评估
 
 evaluation_parametrics("Random Forest Classifier", Y_train, rf_yp_train, Y_test, rf_yp_test)
 
@@ -71,8 +67,6 @@ print("Best Estimators: ", xgb_cv.best_estimator_)
 print("Best Parameters: ", xgb_cv.best_params_)
 print("Accuracy: ", xgb_cv.best_score_)
 
-# Applying Best Parameters Suggested by GridSearch
-
 xgb = XGBClassifier(eta = 0.2, gamma = 0.5, max_depth = 5,
                     n_estimators = 200, objective = 'binary:logistic',
                     eval_metric = "logloss", use_label_encoder = False, random_state = 42)
@@ -82,11 +76,9 @@ xgb.fit(X_train ,Y_train)
 xgb_yp_train = xgb.predict(X_train)
 xgb_yp_test = xgb.predict(X_test)
 
-# Model Evaluation
+# 模型评估
 
 evaluation_parametrics("XgBoost Classifier", Y_train, xgb_yp_train, Y_test, xgb_yp_test)
-
-# Checking For Variable Importance
 
 d3 = pd.DataFrame({'Features': list(X_train.columns), 'Variable Importance Score': list(np.around(xgb.feature_importances_,3))})
 
