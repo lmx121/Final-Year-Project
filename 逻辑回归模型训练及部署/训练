@@ -1,0 +1,251 @@
+grid1 = {"C": np.logspace(-3,3,7), "penalty": ["l1","l2"]}
+
+lr = LogisticRegression(solver = "saga")
+lr_cv = GridSearchCV(lr, grid1, cv = 3)
+lr_cv.fit(X_train, Y_train)
+
+print("Best Parameters: ", lr_cv.best_params_)
+print("Accuracy: ",lr_cv.best_score_)
+
+# Applying Best Parameters Suggested by GridSearch
+
+lr = LogisticRegression(C = 1.0, penalty = 'l1', solver = "saga")
+
+lr.fit(X_train, Y_train)
+
+lr_yp_train = lr.predict(X_train)
+lr_yp_test = lr.predict(X_test)
+
+# Model Evaluation
+
+evaluation_parametrics("Logistic Regression Classifier", Y_train, lr_yp_train, Y_test, lr_yp_test)
+
+# Checking For Variable Importance
+
+d1 = pd.DataFrame({'Features': list(X_train.columns), 'Variable Importance Score': list(np.around(lr.coef_[0],3))})
+d1 = d1.sort_values(by = ['Variable Importance Score'], ascending = False)
+
+feature_importance(d1)
+
+"""![](https://raw.githubusercontent.com/Atharv-Chaudhari/Project-Covid-NLP/main/Project%20Covid%20Images/All%20Day.jpg)
+
+### M2 - Random Forest using GridSearchCv
+"""
+
+grid2 = {'n_estimators': [200, 300], 'max_depth': [5,6,7,8], 'criterion': ['gini', 'entropy']}
+
+rf = RandomForestClassifier(random_state = 42)
+rf_cv = GridSearchCV(rf, grid2, cv = 3)
+rf_cv.fit(X_train, Y_train)
+
+print("Best Parameters: ", rf_cv.best_params_)
+print("Accuracy: ", rf_cv.best_score_)
+
+# Applying Best Parameters Suggested by GridSearch
+
+rf = RandomForestClassifier(n_estimators = 200, max_depth = 8, criterion = 'gini', random_state = 42)
+
+rf.fit(X_train ,Y_train)
+
+rf_yp_train = rf.predict(X_train)
+rf_yp_test = rf.predict(X_test)
+
+# Model Evaluation
+
+evaluation_parametrics("Random Forest Classifier", Y_train, rf_yp_train, Y_test, rf_yp_test)
+
+
+d2 = pd.DataFrame({'Features': list(X_train.columns), 'Variable Importance Score': list(np.around(rf.feature_importances_,3))})
+
+feature_importance(d2)
+
+"""### M3 - XGBoost"""
+
+grid3 = {'gamma': [0.5, 1, 2], 'eta': [0.1, 0.2], 'n_estimators': [200, 300], 'max_depth': [5, 7, 8]}
+
+xgb = XGBClassifier(objective = 'binary:logistic', eval_metric = "logloss", random_state = 42, use_label_encoder = False)
+xgb_cv = GridSearchCV(xgb, grid3, cv = 3)
+xgb_cv.fit(X_train, Y_train)
+
+print("Best Estimators: ", xgb_cv.best_estimator_)
+print("Best Parameters: ", xgb_cv.best_params_)
+print("Accuracy: ", xgb_cv.best_score_)
+
+# Applying Best Parameters Suggested by GridSearch
+
+xgb = XGBClassifier(eta = 0.2, gamma = 0.5, max_depth = 5,
+                    n_estimators = 200, objective = 'binary:logistic',
+                    eval_metric = "logloss", use_label_encoder = False, random_state = 42)
+
+xgb.fit(X_train ,Y_train)
+
+xgb_yp_train = xgb.predict(X_train)
+xgb_yp_test = xgb.predict(X_test)
+
+# Model Evaluation
+
+evaluation_parametrics("XgBoost Classifier", Y_train, xgb_yp_train, Y_test, xgb_yp_test)
+
+# Checking For Variable Importance
+
+d3 = pd.DataFrame({'Features': list(X_train.columns), 'Variable Importance Score': list(np.around(xgb.feature_importances_,3))})
+
+feature_importance(d3)
+
+
+
+pickle.dump(lr, open('lr_model.sav', 'wb'))
+pickle.dump(rf, open('rf_model.sav', 'wb'))
+pickle.dump(xgb, open('xgb_model.sav', 'wb'))
+
+folder_path = '/covid_models/'
+
+# 检查当前工作目录
+print("当前工作目录:", os.getcwd())
+
+# 设置文件夹路径
+folder_path = '/content/covid_models/'
+
+# 创建文件夹（如果不存在）
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
+    print("文件夹已创建")
+else:
+    print("文件夹已存在")
+
+# 保存模型到文件夹中
+models = {'lr_model.sav': lr, 'rf_model.sav': rf, 'xgb_model.sav': xgb}
+for file_name, model in models.items():
+    file_path = os.path.join(folder_path, file_name)
+    with open(file_path, 'wb') as file:
+        pickle.dump(model, file)
+        print(f"{file_name} 已保存")
+
+"""# 用保存的模型进行预测"""
+
+# 加载模型
+with open('/content/covid_models/lr_model.sav', 'rb') as file:
+    lr_model = pickle.load(file)
+
+# 假设有一个新的数据点，用于预测
+new_data_point = [[0, 0, 0, 1, 0, 1, 1, 1, 1]]
+# 假设特征名字是 ['feature1', 'feature2', ...]
+features = pd.DataFrame(new_data_point, columns=['cough',	'fever',	'sore_throat',	'shortness_of_breath',	'head_ache',	'age_60_and_above',	'gender', 'abroad',	'contact_with_covid_positive_patient'])
+
+# 进行预测
+prediction = lr_model.predict(features)
+
+print("预测结果:", prediction)
+
+"""# 转换为tensorflow lite格式
+
+## 首先转换为tensorflow类型 然后转换为tfl类型
+"""
+
+import tensorflow as tf
+import numpy as np
+import pickle
+
+# 加载模型
+with open('/content/covid_models/lr_model.sav', 'rb') as file:
+    lr_model = pickle.load(file)
+
+# 构建 TensorFlow 模型
+model = tf.keras.Sequential([
+    tf.keras.layers.Input(shape=(len(lr_model.coef_[0]),)),
+    tf.keras.layers.Dense(1, activation='sigmoid', use_bias=False)
+])
+
+# 设置模型的权重
+weights = lr_model.coef_.T.astype(np.float32)
+model.layers[0].set_weights([weights])
+
+# 编译模型
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+# 保存 TensorFlow 模型
+tf.saved_model.save(model, '/content/covid_models/lr_model_tf')
+
+# 转换 TensorFlow 模型为 TensorFlow Lite 格式
+converter = tf.lite.TFLiteConverter.from_saved_model('/content/covid_models/lr_model_tf')
+tflite_model = converter.convert()
+
+# 将 TensorFlow Lite 模型保存到文件
+with open('/content/covid_models/lr_model.tflite', 'wb') as f:
+    f.write(tflite_model)
+
+# 加载 TensorFlow Lite 模型
+interpreter = tf.lite.Interpreter(model_path="/content/covid_models/lr_model.tflite")
+interpreter.allocate_tensors()
+
+# 获取输入和输出张量
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
+
+# 假设有一个新的数据点，用于预测
+new_data_point = np.array([[0, 0, 0, 1, 1, 1, 1, 1, 0]], dtype=np.float32)
+
+# 设置输入数据
+interpreter.set_tensor(input_details[0]['index'], new_data_point)
+
+# 运行推理
+interpreter.invoke()
+
+# 获取输出
+output_data = interpreter.get_tensor(output_details[0]['index'])
+
+print("预测结果:", output_data)
+
+# 将模型文件夹保存到云盘
+import os
+import pickle
+
+folder_path = '/covid_models/'
+
+# 检查当前工作目录
+print("当前工作目录:", os.getcwd())
+
+# 设置新的文件夹路径
+new_folder_path = '/content/drive/MyDrive/Colab Notebooks/covid_models/'
+
+# 创建新的文件夹（如果不存在）
+if not os.path.exists(new_folder_path):
+    os.makedirs(new_folder_path)
+    print("文件夹已创建")
+else:
+    print("文件夹已存在")
+
+# 保存三个回归模型到新的文件夹中
+models = {'lr_model.sav': lr, 'rf_model.sav': rf, 'xgb_model.sav': xgb}
+for file_name, model in models.items():
+    file_path = os.path.join(new_folder_path, file_name)
+    with open(file_path, 'wb') as file:
+        pickle.dump(model, file)
+        print(f"{file_name} 已保存")
+
+# 将tensorflow lite模型保存到新文件夹
+with open('/content/drive/MyDrive/Colab Notebooks/covid_models/lr_model.tflite', 'wb') as f:
+    f.write(tflite_model)
+
+# 用云盘的tensorflow lite模型进行预测
+# 加载 TensorFlow Lite 模型
+interpreter = tf.lite.Interpreter(model_path="/content/drive/MyDrive/Colab Notebooks/covid_models/lr_model.tflite")
+interpreter.allocate_tensors()
+
+# 获取输入和输出张量
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
+
+# 假设有一个新的数据点，用于预测
+new_data_point = np.array([[0, 0, 0, 1, 1, 1, 1, 1, 0]], dtype=np.float32)
+
+# 设置输入数据
+interpreter.set_tensor(input_details[0]['index'], new_data_point)
+
+# 运行推理
+interpreter.invoke()
+
+# 获取输出
+output_data = interpreter.get_tensor(output_details[0]['index'])
+
+print("预测结果:", output_data)
