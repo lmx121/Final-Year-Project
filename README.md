@@ -16,7 +16,8 @@ dht11： 环境温湿度
 ###  模型训练及格式转换
 用scikit - learn以及tfl
 ### 模型部署到android
-主要看main的kotin文件
+主要看main的kotin文件   
+以及layout_xml文件
 
 ## 硬件
 （待更新）
