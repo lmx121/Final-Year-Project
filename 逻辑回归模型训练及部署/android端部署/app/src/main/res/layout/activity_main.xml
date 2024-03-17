@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="match_parent" android:layout_width="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/lblEnter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" cough:  "
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/txtValue"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1"
+            android:padding="12dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/lblEnter1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" fever:  "
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/txtValue1"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1"
+            android:padding="12dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/lblEnter2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" sore_throat:  "
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/txtValue2"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1"
+            android:padding="12dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/lblEnter3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" shortness_of_breath:  "
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/txtValue3"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1"
+            android:padding="12dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/lblEnter4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" head_ache:  "
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/txtValue4"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1"
+            android:padding="12dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/lblEnter5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" age_60_and_above:  "
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/txtValue5"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1"
+            android:padding="12dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/lblEnter6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" gender:  "
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/txtValue6"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1"
+            android:padding="12dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/lblEnter7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" abroad:  "
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/txtValue7"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1"
+            android:padding="12dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/lblEnter8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" contact_with_covid_positive_patient:  "
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/txtValue8"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1"
+            android:padding="12dp" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/convertButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Convert"></Button>
+</LinearLayout>
