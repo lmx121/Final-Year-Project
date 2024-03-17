@@ -1,0 +1,15 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.flashType": "UART",
+  "idf.adapterTargetName": "esp32",
+  "idf.openOcdConfigs": [
+    "board/esp32-bridge.cfg"
+  ],
+  "idf.portWin": "COM9",
+  "files.associations": {
+    "max30102_luo.h": "c",
+    "mlx90614_api.h": "c",
+    "mlx90614_smbus_driver.h": "c",
+    "ui.h": "c"
+  }
+}
