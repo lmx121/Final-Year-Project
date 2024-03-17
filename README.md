@@ -1,6 +1,6 @@
 # Final Year Project
  Intelligent detection equipment - including embedded ESP-IDF code, PCB board hardware, android studio code, and model deployment
-## 修改自SPI LCD and Touch Panel Example
+## ESI-IDF部分修改自SPI LCD and Touch Panel Example
 [esp_lcd](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/lcd.html)
 ### Touch controller XPT2046
 In this example you can enable touch controller XPT2046 connected via SPI. 
@@ -11,3 +11,5 @@ max30102：心率 血氧 算法代码
 dht11： 环境温湿度   
 红外测量：原作者参考见注释   
 ### lvgl设计代码
+
+## 模型训练及部署
